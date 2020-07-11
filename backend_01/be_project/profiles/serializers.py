@@ -3,12 +3,12 @@ from .models import Profile
 from django.contrib.auth.models import User
 
 
-class ProfileCreateSerializer(serializers.ModelSerializer):
+class UserCreateSerializer(serializers.ModelSerializer):
 	password =serializers.CharField(write_only=True)
 
 	class Meta:
 		model = User
-		fields = ['username', 'password', 'first_name', 'last_name', 'email',]
+		fields = ['username', 'password', 'first_name', 'last_name', 'email', ]
 
 		def create(self, validated_data):
 			username = validated_data['username']
@@ -33,15 +33,14 @@ class ProfileCreateSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
-		fields = ['username', 'first_name', 'last_name', 'email',]
+		fields = ['username', 'first_name', 'last_name', 'email', ]
 
 class ProfileSerializer(serializers.ModelSerializer):
 	user = UserSerializer()
-	username = serializers.SerializerMethodField()
-
+	
 	class Meta:
 		model = Profile
-		fields = ['user', ]
+		fields = ['user', 'pic' ]
 
 	def get_username(self, obj):
 		return '%s' % (obj.user.username)
